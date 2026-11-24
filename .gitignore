@@ -1,18 +1,21 @@
-# Python
+# Python cache
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-*/.ipynb_checkpoints/*
-
-# Virtual environments
+# Environments
 venv/
 .venv/
 env/
 ENV/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# Unrelated study directory
+supervised_regression/
 
 # IDE & OS files
 .vscode/
