@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CreditWise AI | Loan Underwriting Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="font-sans antialiased text-slate-100 min-h-screen pb-16">
+
+  <!-- Top Bar -->
+  <nav class="border-b border-white/10 glass-nav sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+          <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-indigo-100 to-cyan-300 bg-clip-text text-transparent">CreditWise AI</span>
+          <span class="text-xs px-2 py-0.5 ml-2 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-medium">Standalone Frontend</span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3 text-xs">
+        <span class="text-slate-400">Backend API:</span>
+        <input id="apiBaseUrl" type="text" value="http://127.0.0.1:8000" class="glass-input px-2.5 py-1 rounded-lg text-xs w-48 text-indigo-300">
+      </div>
+    </div>
+  </nav>
+
+  <!-- Presets Banner -->
+  <header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-extrabold text-white">Loan Approval & Risk Intelligence</h1>
+        <p class="text-slate-400 text-sm mt-1">Evaluates 27 standardized financial factors with trained Naive Bayes classifier.</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="applyPreset('prime')" class="preset-btn bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30">
+          <i data-lucide="check" class="w-3.5 h-3.5 mr-1 inline"></i> Prime Approved
+        </button>
+        <button onclick="applyPreset('moderate')" class="preset-btn bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30">
+          <i data-lucide="alert-triangle" class="w-3.5 h-3.5 mr-1 inline"></i> Moderate Risk
+        </button>
+        <button onclick="applyPreset('reject')" class="preset-btn bg-rose-500/20 text-rose-300 border border-rose-500/30 hover:bg-rose-500/30">
+          <i data-lucide="x" class="w-3.5 h-3.5 mr-1 inline"></i> High Risk (Reject)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content Grid -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 mt-4">
+    
+    <!-- Form (7 Cols) -->
+    <div class="lg:col-span-7 space-y-6">
+      <form id="loanForm" class="space-y-6">
+        
+        <!-- Demographics -->
+        <div class="glass-card rounded-2xl p-6">
+          <div class="card-section-title"><i data-lucide="user" class="w-4 h-4 inline mr-1 text-indigo-400"></i> Applicant Demographics</div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-3">
+            <div>
+              <label class="input-label">Age</label>
+              <input type="number" id="Age" value="38" class="glass-input w-full">
+            </div>
+            <div>
+              <label class="input-label">Gender</label>
+              <select id="Gender" class="glass-input w-full">
+                <option value="Male" selected>Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div>
+              <label class="input-label">Marital Status</label>
+              <select id="Marital_Status" class="glass-input w-full">
+                <option value="Married" selected>Married</option>
+                <option value="Single">Single</option>
+              </select>
+            </div>
+            <div>
+              <label class="input-label">Dependents</label>
+              <input type="number" id="Dependents" value="1" class="glass-input w-full">
+            </div>
+            <div>
+              <label class="input-label">Education Level</label>
+              <select id="Education_Level" class="glass-input w-full">
+                <option value="Graduate" selected>Graduate</option>
+                <option value="Not Graduate">Not Graduate</option>
+              </select>
+            </div>
+            <div>
+              <label class="input-label">Property Area</label>
+              <select id="Property_Area" class="glass-input w-full">
+                <option value="Urban" selected>Urban</option>
+                <option value="Semiurban">Semiurban</option>
+                <option value="Rural">Rural</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Employment & Income -->
+        <div class="glass-card rounded-2xl p-6">
+          <div class="card-section-title"><i data-lucide="briefcase" class="w-4 h-4 inline mr-1 text-indigo-400"></i> Employment & Monthly Incomes</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
+            <div>
+              <label class="input-label">Employment Status</label>
+              <select id="Employment_Status" class="glass-input w-full">
+                <option value="Salaried" selected>Salaried</option>
+                <option value="Self-employed">Self-employed</option>
+                <option value="Contract">Contract</option>
+                <option value="Unemployed">Unemployed</option>
+              </select>
+            </div>
+            <div>
+              <label class="input-label">Employer Category</label>
+              <select id="Employer_Category" class="glass-input w-full">
+                <option value="Private" selected>Private</option>
+                <option value="Government">Government</option>
+                <option value="MNC">MNC</option>
+                <option value="Business">Business</option>
+                <option value="Unemployed">Unemployed</option>
+              </select>
+            </div>
+            <div>
+              <label class="input-label">Applicant Income ($/mo)</label>
+              <input type="number" id="Applicant_Income" value="14500" class="glass-input w-full">
+            </div>
+            <div>
+              <label class="input-label">Coapplicant Income ($/mo)</label>
+              <input type="number" id="Coapplicant_Income" value="4000" class="glass-input w-full">
+            </div>
+          </div>
+        </div>
+
+        <!-- Credit & Loan Details -->
+        <div class="glass-card rounded-2xl p-6">
+          <div class="card-section-title"><i data-lucide="credit-card" class="w-4 h-4 inline mr-1 text-indigo-400"></i> Credit History & Loan Request</div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-3">
+            <div>
+              <label class="input-label">Credit Score (300-850)</label>
+              <input type="number" id="Credit_Score" value="735" class="glass-input w-full">
+            </div>
+            <div>
+              <label class="input-label">DTI Ratio</label>
+              <input type="number" id="DTI_Ratio" value="0.25" step="0.01" class="glass-input w-full">
+            </div>
+            <div>
+              <label class="input-label">Existing Loans</label>
+              <input type="number" id="Existing_Loans" value="1" class="glass-input w-full">
+            </div>
+            <div>
+              <label class="input-label">Liquid Savings ($)</label>
+              <input type="number" id="Savings" value="16000" class="glass-input w-full">
+            </div>
+            <div>
+              <label class="input-label">Collateral Value ($)</label>
+              <input type="number" id="Collateral_Value" value="38000" class="glass-input w-full">
+            </div>
+            <div>
+              <label class="input-label">Loan Purpose</label>
+              <select id="Loan_Purpose" class="glass-input w-full">
+                <option value="Home" selected>Home</option>
+                <option value="Personal">Personal</option>
+                <option value="Car">Car</option>
+                <option value="Business">Business</option>
+                <option value="Education">Education</option>
+              </select>
+            </div>
+            <div>
+              <label class="input-label">Requested Loan ($)</label>
+              <input type="number" id="Loan_Amount" value="20000" class="glass-input w-full">
+            </div>
+            <div>
+              <label class="input-label">Loan Term (Months)</label>
+              <select id="Loan_Term" class="glass-input w-full">
+                <option value="12">12 Months</option>
+                <option value="24">24 Months</option>
+                <option value="36">36 Months</option>
+                <option value="48" selected>48 Months</option>
+                <option value="60">60 Months</option>
+                <option value="72">72 Months</option>
+                <option value="84">84 Months</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" id="submitBtn" class="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 font-bold text-white shadow-lg shadow-indigo-600/30 transition flex items-center justify-center space-x-2">
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+          <span>Evaluate Application</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Results (5 Cols) -->
+    <div class="lg:col-span-5 space-y-6">
+      <div id="resultCard" class="glass-card rounded-2xl p-6 shadow-xl transition-all">
+        <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-2">Automated Underwriting</div>
+        
+        <div class="flex items-center justify-between pb-6 border-b border-white/10">
+          <div>
+            <div id="decisionBadge" class="text-3xl font-extrabold text-white">Pending Submission</div>
+            <div id="riskTierText" class="text-xs text-slate-400 mt-1">Submit form to evaluate approval odds</div>
+          </div>
+          <div id="decisionIcon" class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10">
+            <i data-lucide="help-circle" class="w-7 h-7 text-indigo-400"></i>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <div class="flex justify-between text-xs mb-1">
+            <span class="text-slate-300 font-medium">Approval Probability</span>
+            <span id="probPercentage" class="text-indigo-400 font-bold">--%</span>
+          </div>
+          <div class="w-full h-3 rounded-full bg-slate-800 overflow-hidden p-0.5 border border-white/5">
+            <div id="probBar" class="h-full rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 transition-all duration-700" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mt-6">
+          <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+            <div class="text-[11px] text-slate-400">Credit Score Tier</div>
+            <div id="metricCreditTier" class="text-sm font-bold text-slate-200 mt-0.5">--</div>
+          </div>
+          <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+            <div class="text-[11px] text-slate-400">DTI Health</div>
+            <div id="metricDti" class="text-sm font-bold text-slate-200 mt-0.5">--</div>
+          </div>
+          <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+            <div class="text-[11px] text-slate-400">Collateral Coverage</div>
+            <div id="metricCoverage" class="text-sm font-bold text-slate-200 mt-0.5">--</div>
+          </div>
+          <div class="p-3 rounded-xl bg-white/5 border border-white/5">
+            <div class="text-[11px] text-slate-400">Total Monthly Income</div>
+            <div id="metricIncome" class="text-sm font-bold text-slate-200 mt-0.5">--</div>
+          </div>
+        </div>
+
+        <div class="mt-6 space-y-4">
+          <div>
+            <div class="text-xs font-semibold text-emerald-400 mb-1 flex items-center space-x-1">
+              <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+              <span>Key Strengths</span>
+            </div>
+            <ul id="strengthsList" class="text-xs text-slate-300 space-y-1 list-disc pl-4">
+              <li class="text-slate-500 italic list-none">Submit profile to view strengths.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-xs font-semibold text-rose-400 mb-1 flex items-center space-x-1">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
+              <span>Risk Flags</span>
+            </div>
+            <ul id="risksList" class="text-xs text-slate-300 space-y-1 list-disc pl-4">
+              <li class="text-slate-500 italic list-none">Submit profile to view risks.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-xs font-semibold text-indigo-400 mb-1 flex items-center space-x-1">
+              <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i>
+              <span>Recommendations</span>
+            </div>
+            <ul id="recsList" class="text-xs text-slate-300 space-y-1 list-disc pl-4">
+              <li class="text-slate-500 italic list-none">Submit profile to view guidance.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
